@@ -1,5 +1,5 @@
 ViTKAB-for-Microalgae-Identification
-官方 PyTorch 实现 | 论文处于投刊阶段，标题：《VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms》提出 ViTKA网络模型，基于 PyTorch 框架实现四类微生物藻类精度识别，兼顾推理效率与特征捕捉能力，助力水下环境发展。
+	官方 PyTorch 实现 | 论文处于投刊阶段，标题：《VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms》提出 ViTKA网络模型，基于 PyTorch 框架实现四类微生物藻类精度识别，兼顾推理效率与特征捕捉能力，助力水下环境发展。
 
 1. 研究背景与模型定位
    微生物藻类是水体生态、水产养殖及碳循环的关键生物，其类别（如有害蓝藻、有益绿藻）与数量直接影响水质安全和生态平衡。传统藻类检测依赖人工镜检，存在效率低（单样本耗时 5-10 分钟）、依赖专业经验（误判率超 15%）、难以规模化监测（如大面积水体）的问题。本文提出ViTKA（Vision Transformer-Kolmogorov-Arnold Networks-BiFormer） 模型，通过三大核心模块协同优化：1）改进 Vision Transformer（ViT）提升推理速度；2）引入 Kolmogorov-Arnold Networks（KAN）增强非线性特征表征；3）融合 BiFormer 稀疏动态注意力提升鲁棒性。模型基于 PyTorch 2.4.1 框架实现，针对四类常见微生物藻类（有害 + 有益）实现高精度识别，为水质监测、水产养殖藻类调控提供自动化技术支撑。
@@ -18,67 +18,66 @@ ViTKAB-for-Microalgae-Identification
    3.2.2 文件夹组织（解压后放置于项目根目录，结构如下）
    plaintext
    Microalgae\_dataset/  
-   ├──  Pavlova/        
-   ├── verticilium\_wilt/   
-   ├── Pediastrum/     
-   └── Selenastrum capricornutum/              
+   ├──  Pavlova/  
+   ├── verticilium\_wilt/  
+   ├── Pediastrum/  
+   └── Selenastrum capricornutum/
 4. 实验环境配置
    4.1 依赖安装
-   推荐使用 Anaconda 创建虚拟环境，确保 PyTorch 版本与 CUDA 环境匹配（支持 GPU/CPU，优先推荐 GPU 加速）：
-   bash
+   推荐使用 Anaconda 创建虚拟环境，确保 PyTorch 版本与 CUDA 环境匹配（支持 GPU/CPU，优先推荐 GPU 加速）：bash
 
-# 1\. 创建并激活虚拟环境
+&nbsp;      1. 创建并激活虚拟环境
 
-conda create -n vitkab-pytorch python=3.10  
-conda activate vitkab-pytorch
+&nbsp;        conda create -n vitkab-pytorch python=3.10  
+        conda activate vitkab-pytorch
 
-# 2\. 安装PyTorch 2.4.1（GPU版本，需CUDA 12.1；CPU版本见下方备注）
+&nbsp;       2. 安装PyTorch 2.4.1（GPU版本，需CUDA 12.1；CPU版本见下方备注）
 
-conda install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 pytorch-cuda=12.1 -c pytorch -c nvidia
+&nbsp;       conda install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 pytorch-cuda=12.1 -c pytorch -c nvidia
 
-# （备注：CPU版本安装命令）
+&nbsp;      （备注：CPU版本安装命令）
 
-# pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+&nbsp;        pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cpu
 
-# 3\. 安装其他依赖库
+&nbsp;        3. 安装其他依赖库
 
-pip install numpy~=2.0.1 matplotlib~=3.9.5 opencv-python~=4.12.0.88  
-pip install pandas~=2.3.2 pillow~=11.3.0 scikit-learn~=1.5.2  
-pip install tqdm~=4.66.5 tensorboard~=2.17.0 torchmetrics~=1.4.0  
+&nbsp;	pip install numpy~=2.0.1 matplotlib~=3.9.5 opencv-python~=4.12.0.88  
+	pip install pandas~=2.3.2 pillow~=11.3.0 scikit-learn~=1.5.2  
+	pip install tqdm~=4.66.5 tensorboard~=2.17.0 torchmetrics~=1.4.0  
 5. 代码使用说明
-5.1 模型训练
-运行train.py脚本启动训练，支持通过命令行参数调整训练配置，示例命令如下：
-bash
-python train.py \\  
---data\_dir ./cotton\_disease\_dataset \\  # 数据集根目录（解压后的路径）  
---epochs 80 \\                          # 训练轮数  
---batch\_size 32 \\                      # 批次大小（根据GPU显存调整，16/32/64）  
---lr 5e-5 \\                            # 初始学习率  
---weight\_decay 1e-5 \\                  # 权重衰减（防止过拟合）  
---save\_dir ./weights \\                 # 模型权重保存目录（.pth格式）  
---log\_interval 20 \\                    # 每20个batch打印一次训练日志  
---device GPU                           # 训练设备（GPU/CPU）  
-关键参数说明
-参数名	含义	默认值
---data\_dir	数据集根目录路径	./cotton\_disease\_dataset
---epochs	训练轮数	80
---batch\_size	批次大小（GPU 显存不足时可设为 16）	32
---lr	初始学习率（采用余弦退火学习率调度）	5e-5
---save\_dir	权重保存目录（自动生成，.pth 格式）	./weights
---device	训练设备（GPU 需配置 CUDA 12.1+）	GPU
-5.2 模型预测
-使用训练好的权重进行单张微藻图像预测，运行predict.py脚本，示例命令如下：
-bash
-python predict.py \\  
---image\_path ./examples/cotton\_brown\_spot.jpg \\  # 输入图像路径  
---weight\_path ./weights/best\_vitkab.pth \\         # 预训练权重路径（PyTorch .pth格式）  
---device CPU                                      # 预测设备（GPU/CPU）  
-预测输出示例
-plaintext
-输入图像路径：./examples/cotton\_brown\_spot.jpg  
-预测类别：Pa(Pavlova)
-置信度：0.9982  
-预测耗时：12.3ms（CPU）/ 2.1ms（GPU）  
+	5.1 模型训练
+	运行train.py脚本启动训练，支持通过命令行参数调整训练配置，示例命令如下：
+	bash
+	python train.py \\  
+	--data\_dir ./cotton\_disease\_dataset \\  # 数据集根目录（解压后的路径）  
+	--epochs 80 \\                          # 训练轮数  
+	--batch\_size 32 \\                      # 批次大小（根据GPU显存调整，16/32/64）  
+	--lr 5e-5 \\                            # 初始学习率  
+	--weight\_decay 1e-5 \\                  # 权重衰减（防止过拟合）  
+	--save\_dir ./weights \\                 # 模型权重保存目录（.pth格式）  
+	--log\_interval 20 \\                    # 每20个batch打印一次训练日志  
+	--device GPU                           # 训练设备（GPU/CPU）  
+	关键参数说明
+	参数名	含义	默认值
+	--data\_dir	数据集根目录路径	./cotton\_disease\_dataset
+	--epochs	训练轮数	80
+	--batch\_size	批次大小（GPU 显存不足时可设为 16）	32
+	--lr	初始学习率（采用余弦退火学习率调度）	5e-5
+	--save\_dir	权重保存目录（自动生成，.pth 格式）	./weights
+	--device	训练设备（GPU 需配置 CUDA 12.1+）	GPU
+	5.2 模型预测
+	使用训练好的权重进行单张微藻图像预测，运行predict.py脚本，示例命令如下：
+	bash
+	python predict.py \\  
+	--image\_path ./examples/cotton\_brown\_spot.jpg \\  # 输入图像路径  
+	--weight\_path ./weights/best\_vitkab.pth \\         # 预训练权重路径（PyTorch .pth格式）  
+	--device CPU                                      # 预测设备（GPU/CPU）  
+	预测输出示例
+	plaintext
+	输入图像路径：./examples/cotton\_brown\_spot.jpg  
+	预测类别：Pa(Pavlova)
+	置信度：0.9982  
+	预测耗时：12.3ms（CPU）/ 2.1ms（GPU）  
 6. 项目文件结构
 vitka-for-microalgae-identification/  # 项目根目录（更名）
 
@@ -106,7 +105,9 @@ vitka-for-microalgae-identification/  # 项目根目录（更名）
 
 ├── algae\_weights/       # 藻类模型权重保存目录（替换原weights）
 
-└── README.md            # 本说明文档（适配藻类）7. 已知问题与注意事项
+└── README.md            # 本说明文档（适配藻类）
+
+7\. 已知问题与注意事项
 框架适配：本项目仅支持 PyTorch 2.4.1 及以上版本，不兼容 TensorFlow 或低版本 PyTorch（<2.0）；
 输入尺寸：模型固定输入为 384×384×3（RGB 图像），预测时会自动 resize 输入图像，建议原始图像分辨率≥384×384，避免低分辨率导致的特征丢失；
 数据集扩展：如需新增棉花病害类别，需补充对应类别图像数据，并修改models/ViTKAB.py中num\_classes参数（当前为 4，新增后需同步调整）；
@@ -125,7 +126,8 @@ note={Manuscript submitted for publication}
 }  
 8.2 联系方式
 若遇到代码运行问题、数据集获取需求或学术交流，可通过以下方式联系：
-邮箱：songhongyunhuuc@yeah.net（替换为实际邮箱）
+邮箱：songhongyunhuuc@yeah.net
+
 GitHub Issue：直接在本仓库提交 Issue，会在 1-3 个工作日内回复；
 学术交流：可发送主题为 “ViTKA - 学术交流” 的邮件，附个人简介及交流方向，将优先回复
 
