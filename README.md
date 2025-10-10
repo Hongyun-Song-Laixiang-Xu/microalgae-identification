@@ -1,4 +1,4 @@
-ViTKB-for-Microalgae-Identification
+VTKB-for-Microalgae-Identification
 
 官方 PyTorch 实现 | 论文处于投刊阶段，标题：《VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms》提出 ViTKA 网络模型，基于 PyTorch 框架实现四类微生物藻类精度识别，兼顾推理效率与特征捕捉能力，助力水下环境发展。
 
