@@ -1,4 +1,4 @@
-ViTKAB-for-Microalgae-Identification
+ViTKB-for-Microalgae-Identification
 
 官方 PyTorch 实现 | 论文处于投刊阶段，标题：《VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms》提出 ViTKA 网络模型，基于 PyTorch 框架实现四类微生物藻类精度识别，兼顾推理效率与特征捕捉能力，助力水下环境发展。
 
@@ -82,15 +82,15 @@ Table of Contents
 
 plaintext
 
-Microalgae\_dataset/  
+Microalgae\_dataset/
 
-├── Pavlova/        
+├── Pavlova/
 
-├── verticilium\_wilt/   
+├── verticilium\_wilt/
 
-├── Pediastrum/     
+├── Pediastrum/
 
-└── Selenastrum capricornutum/              
+└── Selenastrum capricornutum/
 
 4\. 实验环境配置
 
@@ -102,7 +102,7 @@ bash
 
 \# 1. 创建并激活虚拟环境
 
-conda create -n vitkab-pytorch python=3.10  
+conda create -n vitkab-pytorch python=3.10
 
 conda activate vitkab-pytorch
 
@@ -122,11 +122,11 @@ conda install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 pytorch-cuda=12
 
 \# 3. 安装其他依赖库
 
-pip install numpy~=2.0.1 matplotlib~=3.9.5 opencv-python~=4.12.0.88  
+pip install numpy~=2.0.1 matplotlib~=3.9.5 opencv-python~=4.12.0.88
 
-pip install pandas~=2.3.2 pillow~=11.3.0 scikit-learn~=1.5.2  
+pip install pandas~=2.3.2 pillow~=11.3.0 scikit-learn~=1.5.2
 
-pip install tqdm~=4.66.5 tensorboard~=2.17.0 torchmetrics~=1.4.0  
+pip install tqdm~=4.66.5 tensorboard~=2.17.0 torchmetrics~=1.4.0
 
 5\. 代码使用说明
 
@@ -136,23 +136,23 @@ pip install tqdm~=4.66.5 tensorboard~=2.17.0 torchmetrics~=1.4.0
 
 bash
 
-python train.py \\  
+python train.py \\
 
---data\_dir ./cotton\_disease\_dataset \\  # 数据集根目录（解压后的路径）  
+--data\_dir ./cotton\_disease\_dataset \\  # 数据集根目录（解压后的路径）
 
---epochs 80 \\                          # 训练轮数  
+--epochs 80 \\                          # 训练轮数
 
---batch\_size 32 \\                      # 批次大小（根据GPU显存调整，16/32/64）  
+--batch\_size 32 \\                      # 批次大小（根据GPU显存调整，16/32/64）
 
---lr 5e-5 \\                            # 初始学习率  
+--lr 5e-5 \\                            # 初始学习率
 
---weight\_decay 1e-5 \\                  # 权重衰减（防止过拟合）  
+--weight\_decay 1e-5 \\                  # 权重衰减（防止过拟合）
 
---save\_dir ./weights \\                 # 模型权重保存目录（.pth格式）  
+--save\_dir ./weights \\                 # 模型权重保存目录（.pth格式）
 
---log\_interval 20 \\                    # 每20个batch打印一次训练日志  
+--log\_interval 20 \\                    # 每20个batch打印一次训练日志
 
---device GPU                           # 训练设备（GPU/CPU）  
+--device GPU                           # 训练设备（GPU/CPU）
 
 关键参数说明
 
@@ -176,25 +176,25 @@ python train.py \\
 
 bash
 
-python predict.py \\  
+python predict.py \\
 
---image\_path ./examples/cotton\_brown\_spot.jpg \\  # 输入图像路径  
+--image\_path ./examples/cotton\_brown\_spot.jpg \\  # 输入图像路径
 
---weight\_path ./weights/best\_vitkab.pth \\         # 预训练权重路径（PyTorch .pth格式）  
+--weight\_path ./weights/best\_vitkab.pth \\         # 预训练权重路径（PyTorch .pth格式）
 
---device CPU                                      # 预测设备（GPU/CPU）  
+--device CPU                                      # 预测设备（GPU/CPU）
 
 预测输出示例
 
 plaintext
 
-输入图像路径：./examples/cotton\_brown\_spot.jpg  
+输入图像路径：./examples/cotton\_brown\_spot.jpg
 
 预测类别：Pa(Pavlova)
 
-置信度：0.9982  
+置信度：0.9982
 
-预测耗时：12.3ms（CPU）/ 2.1ms（GPU）  
+预测耗时：12.3ms（CPU）/ 2.1ms（GPU）
 
 6\. 项目文件结构
 
@@ -248,19 +248,19 @@ GPU 依赖：训练时推荐使用 CUDA 12.1 及以上版本 GPU（显存≥8GB�
 
 bibtex
 
-@article{vitka\_Microalgae,  
+@article{vitka\_Microalgae,
 
-title={VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms},  
+title={VTKB: A Microalgae Spectral Classification Network Based on Deep Learning Algorithms},
 
-author={\[作者姓名，待发表时补充]},  
+author={\[作者姓名，待发表时补充]},
 
-journal={\[期刊名称，待录用后补充]},  
+journal={\[期刊名称，待录用后补充]},
 
-year={2025},  
+year={2025},
 
-note={Manuscript submitted for publication}  
+note={Manuscript submitted for publication}
 
-}  
+}
 
 8.2 联系方式
 
